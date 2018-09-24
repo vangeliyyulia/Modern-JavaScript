@@ -39,6 +39,10 @@ function newTweet(e) {
 
     // add to the local storage
     addTweetLocalStorage(tweet);
+
+    // alert
+    alert('Tweet Added!');
+    this.reset();
 }
 
 // removes the tweets from the DOM
@@ -46,6 +50,9 @@ function removeTweet(e) {
     if(e.target.classList.contains('remove-tweet')) {
         e.target.parentElement.remove();
     }
+
+    // remove from the storage
+    removeTweetLocalStorage(e.target.parentElement.textContent);
 }
 
 // adds tweets to the local storage 
@@ -92,4 +99,22 @@ function localStorageOnLoad() {
         // add to the list
         tweetList.appendChild(li);
     });
+}
+
+// remove tweet from Local Storage
+function removeTweetLocalStorage(tweet) {
+    let tweets = getTweetsFromStorage();
+
+    // remove the X from the tweet
+    const tweetDelete = tweet.substring(0, tweet.length -1);
+    
+    // loop through the tweets and remove the tweet that equal
+    tweets.forEach(function(tweetLS, index) {
+        if(tweetDelete === tweetLS) {
+            tweets.splice(index, 1)
+        }
+    });
+
+    // save the data
+    localStorage.setItem('tweets', JSON.stringify(tweets));
 }
